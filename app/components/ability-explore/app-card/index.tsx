@@ -1,15 +1,8 @@
-/*
- * @Author: zhangboya3 zhangboya3@xiaomi.com
- * @Date: 2025-03-05 15:42:20
- * @LastEditors: zhangboya3 zhangboya3@xiaomi.com
- * @LastEditTime: 2025-03-05 18:59:27
- * @FilePath: /yd/app/components/ability-explore/app-card/index.tsx
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 'use client'
 import cn from '@/utils/classnames'
 import type { App } from '@/models/explore'
 import AppIcon from '@/app/components/base/app-icon'
+import { getLanguage } from '@/i18n/language'
 import {
   AiText,
   ChatBot,
@@ -20,18 +13,17 @@ import Button from '@/app/components/base/button'
 import { useRouter } from 'next/navigation'
 import ExploreContext from '@/context/explore-context'
 import { useContext } from 'use-context-selector'
+import type { Collection } from '@/models/ability-explore'
+import I18n from '@/context/i18n'
+import { useState } from 'react'
 export type AppCardProps = {
-  app: App
+  collection: Collection
+  onSelect?: () => void
 }
 
-const AppCard = ({ app }: AppCardProps) => {
-  const { app: appBasicInfo } = app
-  const router = useRouter()
-  const { activeTabItem, setInstalledApps, installedApps } = useContext(ExploreContext)
-  const url = `/ability-explore/installed/a0ba1b0e-d0ee-40d4-941c-0372d6ba7fdb?type=${activeTabItem.key}`
-  const lookDetails = () => {
-    router.push(url)
-  }
+const AppCard = ({ onSelect, collection }: AppCardProps) => {
+  const { locale } = useContext(I18n)
+  const language = getLanguage(locale)
   return (
     <div
       className={cn(
@@ -40,42 +32,26 @@ const AppCard = ({ app }: AppCardProps) => {
     >
       <div className="flex pt-[14px] px-[14px] pb-3 h-[66px] items-center gap-3 grow-0 shrink-0">
         <div className="relative shrink-0">
-          <AppIcon
-            size="large"
-            iconType={appBasicInfo.icon_type}
-            icon={appBasicInfo.icon}
-            background={appBasicInfo.icon_background}
-            imageUrl={appBasicInfo.icon_url}
-          />
-          <span className="absolute bottom-[-3px] right-[-3px] w-4 h-4 p-0.5 bg-white rounded border-[0.5px] border-[rgba(0,0,0,0.02)] shadow-sm">
-            {appBasicInfo.mode === 'advanced-chat' && (
-              <ChatBot className="w-3 h-3 text-[#1570EF]" />
-            )}
-            {appBasicInfo.mode === 'agent-chat' && (
-              <CuteRobot className="w-3 h-3 text-indigo-600" />
-            )}
-            {appBasicInfo.mode === 'chat' && (
-              <ChatBot className="w-3 h-3 text-[#1570EF]" />
-            )}
-            {appBasicInfo.mode === 'completion' && (
-              <AiText className="w-3 h-3 text-[#0E9384]" />
-            )}
-            {appBasicInfo.mode === 'workflow' && (
-              <Route className="w-3 h-3 text-[#f79009]" />
-            )}
-          </span>
+          {typeof collection.icon === 'string' && (
+            <div className='w-10 h-10 bg-center bg-cover bg-no-repeat rounded-md' style={{ backgroundImage: `url(${collection.icon})` }} />
+          )}
+          {typeof collection.icon !== 'string' && (
+            <AppIcon
+              size='large'
+              icon={collection.icon.content}
+              background={collection.icon.background}
+            />
+          )}
         </div>
         <div className="grow w-0 py-[1px]">
           <div className="flex items-center text-sm leading-5 font-semibold text-text-secondary">
-            <div className="truncate" title={appBasicInfo.name}>
-              {appBasicInfo.name}
-            </div>
+            <div className='truncate' title={collection.label[language]}>{collection.label[language]}</div>
           </div>
         </div>
       </div>
       <div className="description-wrapper h-[90px] px-[14px] text-xs leading-normal text-text-tertiary ">
         <div className="line-clamp-4 group-hover:line-clamp-2">
-          {app.description}
+          {collection.description[language]}
         </div>
       </div>
       <div
@@ -85,9 +61,9 @@ const AppCard = ({ app }: AppCardProps) => {
       >
         <div className={cn('flex items-center w-full space-x-2')}>
           <Button
-            className="text-sm w-[104px] h-[24px] bg-[#155EEF] rounded-[12px] text-xs"
+            className=" w-[104px] h-[24px] bg-[#155EEF] rounded-[12px] text-xs"
             variant="primary"
-            onClick={lookDetails}
+            onClick={onSelect}
           >
             查看数据详情
           </Button>

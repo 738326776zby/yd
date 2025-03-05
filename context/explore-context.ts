@@ -1,15 +1,17 @@
 import { createContext } from 'use-context-selector'
-import type { InstalledApp } from '@/models/ability-explore'
+import type { Collection } from '@/models/ability-explore'
 import type {
   NavItem,
   NavSection,
 } from '@/app/components/ability-explore/sidebar/index.tsx'
+
+
 type IExplore = {
   controlUpdateInstalledApps: number
   setControlUpdateInstalledApps: (controlUpdateInstalledApps: number) => void
   hasEditPermission: boolean
-  installedApps: InstalledApp[]
-  setInstalledApps: (installedApps: InstalledApp[]) => void
+  installedApps: Collection[]
+  setInstalledApps: (installedApps: Collection[]) => void
   setActiveTabItem: (item: NavSection & NavItem) => void
   activeTabItem: NavSection & NavItem
 }
