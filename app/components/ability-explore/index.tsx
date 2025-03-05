@@ -1,3 +1,11 @@
+/*
+ * @Author: zhangboya3 zhangboya3@xiaomi.com
+ * @Date: 2025-03-05 15:42:20
+ * @LastEditors: zhangboya3 zhangboya3@xiaomi.com
+ * @LastEditTime: 2025-03-05 18:25:04
+ * @FilePath: /yd/app/components/ability-explore/index.tsx
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 'use client'
 import type { FC } from 'react'
 import React, { useEffect, useState } from 'react'
@@ -24,12 +32,6 @@ const Explore: FC<IExploreProps> = ({
   const [activeTabItem, setActiveTabItem] = useState({})
   useEffect(() => {
     document.title = `${t('explore.title')} -  Dify`;
-    // (async () => {
-    //   const { accounts } = await fetchMembers({ url: '/workspaces/current/members', params: {} })
-    //   if (!accounts)
-    //     return
-    //   // const currUser = accounts.find(account => account.id === userProfile.id)
-    // })()
   }, [])
 
   useEffect(() => {
@@ -42,9 +44,9 @@ const Explore: FC<IExploreProps> = ({
       <ExploreContext.Provider
         value={
           {
-            // setControlUpdateInstalledApps,
             setInstalledApps,
             setActiveTabItem,
+            //@ts-ignore
             activeTabItem,
             installedApps
           }

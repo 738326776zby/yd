@@ -1,9 +1,9 @@
 import { createContext } from 'use-context-selector'
-import type { InstalledApp } from '@/models/explore'
+import type { InstalledApp } from '@/models/ability-explore'
 import type {
   NavItem,
   NavSection,
-} from '@/app/components/explore/sidebar/index.tsx'
+} from '@/app/components/ability-explore/sidebar/index.tsx'
 type IExplore = {
   controlUpdateInstalledApps: number
   setControlUpdateInstalledApps: (controlUpdateInstalledApps: number) => void
@@ -16,11 +16,13 @@ type IExplore = {
 
 const ExploreContext = createContext<IExplore>({
   controlUpdateInstalledApps: 0,
-  setControlUpdateInstalledApps: () => {},
+  setControlUpdateInstalledApps: () => { },
   hasEditPermission: false,
   installedApps: [],
-  setInstalledApps: () => {},
-  setActiveTabItem: () => {},
+  // 记录当前页面 应用列表
+  setInstalledApps: () => { },
+  //记录选中 tab
+  setActiveTabItem: () => { },
   activeTabItem: {
     title: '',
     mainTitle: '',

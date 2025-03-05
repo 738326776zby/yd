@@ -1,18 +1,13 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { useTranslation } from 'react-i18next'
+import React, { useMemo, useState,useEffect } from 'react'
 import { useContext } from 'use-context-selector'
-import useSWR from 'swr'
 import { useDebounceFn } from 'ahooks'
 import s from './style.module.css'
 import cn from '@/utils/classnames'
 import ExploreContext from '@/context/explore-context'
-
 import AppCard from '@/app/components/ability-explore/app-card'
-import { fetchAppList } from '@/service/explore'
-import Loading from '@/app/components/base/loading'
+import { fetchInstalledAppList as doFetchInstalledAppList} from '@/service/ability-explore'
 import Input from '@/app/components/base/input'
 
 type AppsProps = {
@@ -26,23 +21,8 @@ export enum PageType {
 }
 
 const Apps = () => {
-  const { activeTabItem } = useContext(ExploreContext)
-  const {
-    data: { categories, allList },
-  } = useSWR(
-    ['/ability-explore/apps'],
-    () =>
-      fetchAppList().then(({ categories, recommended_apps }) => ({
-        categories,
-        allList: recommended_apps.sort((a, b) => a.position - b.position),
-      })),
-    {
-      fallbackData: {
-        categories: [],
-        allList: [],
-      },
-    },
-  )
+  const { activeTabItem,setInstalledApps,installedApps } = useContext(ExploreContext)
+
   const [keywords, setKeywords] = useState('')
   const [searchKeywords, setSearchKeywords] = useState('')
 
@@ -52,32 +32,32 @@ const Apps = () => {
     },
     { wait: 500 },
   )
-
+  const fetchInstalledAppList = async () => {
+    const { installed_apps }: any = await doFetchInstalledAppList()
+    setInstalledApps(installed_apps)
+  }
+  useEffect(() => {
+    fetchInstalledAppList()
+  }, [])
   const handleKeywordsChange = (value: string) => {
     setKeywords(value)
     handleSearch()
   }
   const searchFilteredList = useMemo(() => {
-    if (!searchKeywords || !allList || allList.length === 0) return allList
+    if (!searchKeywords || !installedApps || installedApps.length === 0) return installedApps
 
     const lowerCaseSearchKeywords = searchKeywords.toLowerCase()
 
-    return allList.filter((item) => {
+    return installedApps.filter((item) => {
       return (
         item.app &&
         item.app.name &&
         item.app.name.toLowerCase().includes(lowerCaseSearchKeywords)
       )
     })
-  }, [searchKeywords, allList])
+  }, [searchKeywords, installedApps])
 
-  if (!categories || categories.length === 0) {
-    return (
-      <div className="flex h-full items-center">
-        <Loading type="area" />
-      </div>
-    )
-  }
+
 
   return activeTabItem.key === 'owned'? (
     <div className={cn('flex flex-col', 'h-full border-l border-gray-200')}>
@@ -112,6 +92,8 @@ const Apps = () => {
           )}
         >
           {searchFilteredList.map((app) => {
+
+            //@ts-ignore
             return <AppCard app={app} />
           })}
         </nav>

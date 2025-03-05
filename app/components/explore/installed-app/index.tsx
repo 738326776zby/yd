@@ -26,7 +26,7 @@ const InstalledApp: FC<IInstalledAppProps> = ({
   }
 
   return (
-    <div className='h-full py-2 pl-0 pr-2 sm:p-2'>
+    <div className='h-full py-2 pl-0 pr-2 sm:p-2 mt-4'>
       {installedApp.app.mode !== 'completion' && installedApp.app.mode !== 'workflow' && (
         <ChatWithHistory installedAppInfo={installedApp} className='rounded-2xl shadow-md overflow-hidden' />
       )}

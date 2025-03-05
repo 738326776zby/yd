@@ -1,11 +1,3 @@
-/*
- * @Author: zhangboya3 zhangboya3@xiaomi.com
- * @Date: 2024-12-30 10:43:41
- * @LastEditors: zhangboya3 zhangboya3@xiaomi.com
- * @LastEditTime: 2025-03-04 23:36:50
- * @FilePath: /yd/app/components/base/chat/chat/context.tsx
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 'use client'
 
 import type { ReactNode } from 'react'
