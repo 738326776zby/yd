@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 import ExploreContext from '@/context/explore-context'
-import Sidebar from '@/app/components/explore/sidebar'
+import Sidebar from '@/app/components/ability-explore/sidebar'
 import { useAppContext } from '@/context/app-context'
 import { fetchMembers } from '@/service/common'
 import type { InstalledApp } from '@/models/explore'
@@ -18,20 +18,18 @@ const Explore: FC<IExploreProps> = ({
 }) => {
   const { t } = useTranslation()
   const router = useRouter()
-  const [controlUpdateInstalledApps, setControlUpdateInstalledApps] = useState(0)
+  // const [controlUpdateInstalledApps, setControlUpdateInstalledApps] = useState(0)
   const { userProfile, isCurrentWorkspaceDatasetOperator } = useAppContext()
-  const [hasEditPermission, setHasEditPermission] = useState(false)
   const [installedApps, setInstalledApps] = useState<InstalledApp[]>([])
-
+  const [activeTabItem, setActiveTabItem] = useState({})
   useEffect(() => {
     document.title = `${t('explore.title')} -  Dify`;
-    (async () => {
-      const { accounts } = await fetchMembers({ url: '/workspaces/current/members', params: {} })
-      if (!accounts)
-        return
-      const currUser = accounts.find(account => account.id === userProfile.id)
-      setHasEditPermission(currUser?.role !== 'normal')
-    })()
+    // (async () => {
+    //   const { accounts } = await fetchMembers({ url: '/workspaces/current/members', params: {} })
+    //   if (!accounts)
+    //     return
+    //   // const currUser = accounts.find(account => account.id === userProfile.id)
+    // })()
   }, [])
 
   useEffect(() => {
@@ -44,15 +42,15 @@ const Explore: FC<IExploreProps> = ({
       <ExploreContext.Provider
         value={
           {
-            controlUpdateInstalledApps,
-            setControlUpdateInstalledApps,
-            hasEditPermission,
-            installedApps,
+            // setControlUpdateInstalledApps,
             setInstalledApps,
+            setActiveTabItem,
+            activeTabItem,
+            installedApps
           }
         }
       >
-        <Sidebar controlUpdateInstalledApps={controlUpdateInstalledApps} />
+        <Sidebar setActiveTabItem={setActiveTabItem} />
         <div className='grow w-0'>
           {children}
         </div>

@@ -15,7 +15,8 @@ const InstalledApp: FC<IInstalledAppProps> = ({
   id,
 }) => {
   const { installedApps } = useContext(ExploreContext)
-  const installedApp = installedApps.find(item => item.id === id)
+  console.log(installedApps)
+  const installedApp = installedApps?.find(item => item.id === id)
 
   if (!installedApp) {
     return (

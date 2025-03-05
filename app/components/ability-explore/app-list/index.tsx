@@ -10,7 +10,7 @@ import s from './style.module.css'
 import cn from '@/utils/classnames'
 import ExploreContext from '@/context/explore-context'
 
-import AppCard from '@/app/components/explore/app-card2'
+import AppCard from '@/app/components/ability-explore/app-card'
 import { fetchAppList } from '@/service/explore'
 import Loading from '@/app/components/base/loading'
 import Input from '@/app/components/base/input'
@@ -30,7 +30,7 @@ const Apps = () => {
   const {
     data: { categories, allList },
   } = useSWR(
-    ['/explore/apps'],
+    ['/ability-explore/apps'],
     () =>
       fetchAppList().then(({ categories, recommended_apps }) => ({
         categories,
