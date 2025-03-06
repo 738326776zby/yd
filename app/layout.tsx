@@ -6,6 +6,7 @@ import { getLocaleOnServer } from '@/i18n/server'
 import { TanstackQueryIniter } from '@/context/query-client'
 import './styles/globals.css'
 import './styles/markdown.scss'
+import './styles/iconfont.css'
 
 export const metadata = {
   title: 'Dify',
