@@ -51,7 +51,7 @@ const Explore: FC<IExploreProps> = ({
         }
       >
         <Sidebar setActiveTabItem={setActiveTabItem} />
-        <div className='grow w-0 px-6'>
+        <div className='grow w-0 pl-6'>
           {children}
         </div>
       </ExploreContext.Provider>

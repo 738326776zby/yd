@@ -19,15 +19,17 @@ import { useState } from 'react'
 export type AppCardProps = {
   collection: Collection
   onSelect?: () => void
+  active?: boolean
 }
 
-const AppCard = ({ onSelect, collection }: AppCardProps) => {
+const AppCard = ({ onSelect, collection,active }: AppCardProps) => {
   const { locale } = useContext(I18n)
   const language = getLanguage(locale)
   return (
     <div
       className={cn(
         'relative overflow-hidden pb-2 group col-span-1 bg-white border-2 border-solid border-transparent rounded-lg shadow-sm flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg',
+        active && '!border-primary-400'
       )}
     >
       <div className="flex pt-[14px] px-[14px] pb-3 h-[66px] items-center gap-3 grow-0 shrink-0">

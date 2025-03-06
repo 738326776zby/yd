@@ -8,7 +8,7 @@ import s from './style.module.css'
 import cn from '@/utils/classnames'
 import ExploreContext from '@/context/explore-context'
 import AppCard from '@/app/components/ability-explore/app-card'
-import { fetchCollectionList  } from '@/service/ability-explore'
+import { fetchCollectionList } from '@/service/ability-explore'
 import Input from '@/app/components/base/input'
 import { Collection } from '@/models/ability-explore';
 import Empty from '@/app/components/ability-explore/empty'
@@ -58,7 +58,7 @@ const Apps = () => {
 
 
   return activeTabItem.key === 'owned' ? (
-    <div className={cn('flex ', 'h-full  border-gray-200 relative')}>
+    <div className={'flex h-full  border-gray-200 relative gap-6'}>
       <div className='relative flex flex-col overflow-y-auto bg-gray-100 grow'>
         <div className="shrink-0 pt-6 ">
           <div
@@ -93,18 +93,18 @@ const Apps = () => {
             {searchFilteredList.map((collection) => {
 
               //@ts-ignore
-              return <AppCard collection={collection} onSelect={() => setCurrentProvider(collection)} />
+              return <AppCard collection={collection} onSelect={() => setCurrentProvider(collection)} active={currentProvider?.id === collection.id} />
             })}
             {!searchFilteredList.length && <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'><Empty /></div>}
           </nav>
         </div>
       </div>
       <div className={cn(
-        'shrink-0 w-0 border-l-[0.5px] border-black/8 overflow-y-auto transition-all duration-200 ease-in-out',
-        currentProvider && 'w-[420px]  bg-components-panel-bg',
+        'shrink-0 w-0  border-black/8 overflow-y-auto transition-all duration-200 ease-in-out',
+        currentProvider && 'w-[420px]',
       )}>
         {currentProvider && <ProviderDetail collection={currentProvider} onRefreshData={getProviderList} />}
-        <div className='absolute top-5 right-5 p-1 cursor-pointer' onClick={() => setCurrentProvider(undefined)}><RiCloseLine className='w-4 h-4' /></div>
+        {currentProvider && <div className='absolute top-5 right-5 p-1 cursor-pointer' onClick={() => setCurrentProvider(undefined)}><RiCloseLine className='w-4 h-4' /></div>}
       </div>
     </div>
   )
