@@ -31,12 +31,17 @@ export const useTabSearchParams = ({
       ? (searchParams.get(searchParamName) || defaultTab)
       : defaultTab,
   )
-
+  const type =searchParams.get('type')
+  
   const setActiveTab = (newActiveTab: string) => {
     setTab(newActiveTab)
     if (disableSearchParams)
       return
-    history[`${routingBehavior}State`](null, '', `${pathName}?${searchParamName}=${newActiveTab}`)
+    let url = `${pathName}?${searchParamName}=${newActiveTab}`
+    if (type) { 
+      url += `&type=${type}`
+    }
+    history[`${routingBehavior}State`](null, '', url)
   }
 
   return [activeTab, setActiveTab] as const

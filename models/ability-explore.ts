@@ -163,3 +163,13 @@ export type WorkflowToolProviderResponse = {
   }
   privacy_policy: string
 }
+export type DefaultToolsListItem = {
+  amount1: number
+  amount2: number
+  list:Collection[]
+}|undefined
+export type DefaultToolsListResponse = {
+  xinxijiansuo: DefaultToolsListItem
+  wenben: DefaultToolsListItem
+  wendangchuli: DefaultToolsListItem
+}

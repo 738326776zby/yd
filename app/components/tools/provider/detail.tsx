@@ -233,7 +233,7 @@ const ProviderDetail = ({
           </div>
         </div>
       </div>
-      <div className='text-[14px] font-semibold text-[#495464] mt-[30px] mb-4'>插件介绍</div>
+      {/* <div className='text-[14px] font-semibold text-[#495464] mt-[30px] mb-4'>介绍</div> */}
       <div className='mt-2 min-h-[36px] text-gray-500 text-sm leading-[18px]'>{collection.description[language]}</div>
       <div className='flex gap-1 border-b-[0.5px] b/5order-black'>
         {(collection.type === CollectionType.builtIn) && needAuth && (
