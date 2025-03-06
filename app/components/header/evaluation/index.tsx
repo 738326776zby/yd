@@ -28,8 +28,8 @@ const EvaluationsNav = ({
     )}>
       {
         activated
-          ? <RiHammerFill className='mr-2 w-4 h-4' />
-          : <RiHammerLine className='mr-2 w-4 h-4' />
+          ? <span className='icon iconfont icon-character-recognition-fill mr-1'></span>
+          : <span className='icon iconfont icon-character-recognition-line mr-1'></span>
       }
       {t('common.menus.evaluation')}
     </Link>

@@ -17,8 +17,14 @@ import ProviderCard from '@/app/components/tools/provider/card'
 import ProviderDetail from '@/app/components/tools/provider/detail'
 import Empty from '@/app/components/tools/add-tool-modal/empty'
 import { fetchCollectionList } from '@/service/tools'
+import ExploreContext from '@/context/explore-context'
+import { useContext } from 'use-context-selector'
+import s from './style.module.css'
+type ProviderListProps = {
+  type: string
+}
 
-const ProviderList = () => {
+const ProviderList = ({ type }: ProviderListProps) => {
   const { t } = useTranslation()
 
   const [activeTab, setActiveTab] = useTabSearchParams({
@@ -37,7 +43,7 @@ const ProviderList = () => {
   const handleKeywordsChange = (value: string) => {
     setKeywords(value)
   }
-
+  const { activeTabItem } = useContext(ExploreContext)
   const [collectionList, setCollectionList] = useState<Collection[]>([])
   const filteredCollectionList = useMemo(() => {
     return collectionList.filter((collection) => {
@@ -67,21 +73,38 @@ const ProviderList = () => {
   }, [collectionList, currentProvider])
 
   return (
-    <div className='relative flex overflow-hidden bg-gray-100 shrink-0 h-0 grow'>
+    <div className='flex h-full relative flex overflow-hidden bg-gray-100 shrink-0 h-0 grow'>
       <div className='relative flex flex-col overflow-y-auto bg-gray-100 grow'>
         <div className={cn(
           'sticky top-0 flex justify-between items-center pt-4 px-12 pb-2 leading-[56px] bg-gray-100 z-20 flex-wrap gap-y-2',
           currentProvider && 'pr-6',
         )}>
-          <TabSliderNew
-            value={activeTab}
-            onChange={(state) => {
-              setActiveTab(state)
-              if (state !== activeTab)
-                setCurrentProvider(undefined)
-            }}
-            options={options}
-          />
+          <div>
+            {
+              type === 'tools' && <TabSliderNew
+                value={activeTab}
+                onChange={(state) => {
+                  setActiveTab(state)
+                  if (state !== activeTab)
+                    setCurrentProvider(undefined)
+                }}
+                options={options}
+              />
+            }
+            {
+              type === 'owned' && <div className="shrink-0 pt-6 ">
+                <div
+                  className={
+                    'mb-1 text-xl font-semibold items-center justify-between flex'
+                  }
+                >
+                  <span className={s.textGradient}>{activeTabItem?.mainTitle}</span>
+                </div>
+                <div className="text-gray-500 text-sm">{activeTabItem?.desc}</div>
+              </div>
+            }
+          </div>
+
           <div className='flex items-center gap-2'>
             <LabelFilter value={tagFilterValue} onChange={handleTagsChange} />
             <Input
@@ -98,8 +121,12 @@ const ProviderList = () => {
           'relative grid content-start grid-cols-1 gap-4 px-12 pt-2 pb-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grow shrink-0',
           currentProvider && 'pr-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
         )}>
-          {activeTab === 'builtin' && <ContributeCard />}
-          {activeTab === 'api' && <CustomCreateCard onRefreshData={getProviderList} />}
+          {
+            type === 'tools' && <>
+              {activeTab === 'builtin' && <ContributeCard />}
+              {activeTab === 'api' && <CustomCreateCard onRefreshData={getProviderList} />}
+            </>
+          }
           {filteredCollectionList.map(collection => (
             <ProviderCard
               active={currentProvider?.id === collection.id}
@@ -112,7 +139,7 @@ const ProviderList = () => {
         </div>
       </div>
       <div className={cn(
-        'shrink-0 w-0 border-l-[0.5px] border-black/8 overflow-y-auto transition-all duration-200 ease-in-out',
+        'shrink-0 w-0 border-l-[0.5px] border-black/8 overflow-y-auto transition-all duration-200 ease-in-out bg-white',
         currentProvider && 'w-[420px]',
       )}>
         {currentProvider && <ProviderDetail collection={currentProvider} onRefreshData={getProviderList} />}

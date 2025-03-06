@@ -7,6 +7,7 @@ import cn from '@/utils/classnames'
 import Drawer from '@/app/components/base/drawer-plus'
 import Form from '@/app/components/header/account-setting/model-provider-page/model-modal/Form'
 import { addDefaultValue, toolParametersToFormSchemas } from '@/app/components/tools/utils/to-form-schema'
+import Textarea from '@/app/components/base/textarea'
 import type { Collection, Tool } from '@/app/components/tools/types'
 import { CollectionType } from '@/app/components/tools/types'
 import { fetchBuiltInToolList, fetchCustomToolList, fetchModelToolList, fetchWorkflowToolList } from '@/service/tools'
@@ -52,6 +53,20 @@ const SettingBuiltInTool: FC<Props> = ({
   const [tempSetting, setTempSetting] = useState(setting)
   const [currType, setCurrType] = useState('info')
   const isInfoActive = currType === 'info'
+  const [example, setExample] = useState([
+    {
+      content: '12334'
+    },
+    {
+      content: '555'
+    },
+    {
+      content: '666'
+    },
+  ])
+  const [paramsData, setParamsData] = useState<any>({
+    content: '12334'
+  })
   useEffect(() => {
     if (!collection)
       return
@@ -98,24 +113,30 @@ const SettingBuiltInTool: FC<Props> = ({
 
   const infoUI = (
     <div className='pt-2'>
-      <div className='leading-5 text-sm font-medium text-gray-900'>
-        {t('tools.setBuiltInTools.toolDescription')}
-      </div>
-      <div className='mt-1 leading-[18px] text-xs font-normal text-gray-600'>
+      <div className='text-[14px]  text-[#495464] font-bold  mb-[7px]'> {t('tools.setBuiltInTools.toolDescription')}</div>
+      <div className='mt-1 leading-[18px] text-xs font-normal text-[#495464]'>
         {currTool?.description[language]}
       </div>
 
       {infoSchemas.length > 0 && (
         <div className='mt-6'>
-          <div className='flex items-center mb-4 leading-[18px] text-xs font-semibold text-gray-500 uppercase'>
-            <div className='mr-3'>{t('tools.setBuiltInTools.parameters')}</div>
-            <div className='grow w-0 h-px bg-[#f3f4f6]'></div>
+          <div className='text-[14px]  text-[#495464]  mb-[7px] font-bold'> {t('tools.setBuiltInTools.parameters')}</div>
+          <div className='flex gap-4 mb-4'>
+            {
+              example.map((exampleItem, index) => {
+                return <div className='w-[80px] h-[24px] bg-[#DEE9FF] rounded-[12px] flex items-center justify-center cursor-pointer text-[14px] text-[#155EEF]'
+                  onClick={() => {
+                    setParamsData(exampleItem)
+                  }}
+                >示例{index + 1}</div>
+              })
+            }
           </div>
-          <div className='space-y-4'>
+          <div className='space-y-4 '>
             {infoSchemas.map((item: any, index) => (
               <div key={index}>
                 <div className='flex items-center space-x-2 leading-[18px]'>
-                  <div className='text-[13px] font-semibold text-gray-900'>{item.label[language]}</div>
+                  <div className='text-[14px]  text-[#495464]'>{item.label[language]}</div>
                   <div className='text-xs font-medium text-gray-500'>{item.type === 'number-input' ? t('tools.setBuiltInTools.number') : t('tools.setBuiltInTools.string')}</div>
                   {item.required && (
                     <div className='text-xs font-medium text-[#EC4A0A]'>{t('tools.setBuiltInTools.required')}</div>
@@ -126,9 +147,37 @@ const SettingBuiltInTool: FC<Props> = ({
                     {item.human_description?.[language]}
                   </div>
                 )}
+                <Textarea
+                  className='h-[88px] resize-none mt-4'
+                  value={paramsData[item.name]}
+                  onChange={e => {
+                    setParamsData({
+                      ...paramsData,
+                      [item.name]: e.target.value
+                    })
+                  }}
+                  placeholder='请输入'
+                />
               </div>
             ))}
+
           </div>
+          <div className='flex justify-center my-6'>
+            <Button
+              className='w-[104px] h-[32px] rounded-[20px]'
+              variant='primary'
+              onClick={() => { }}
+            >
+              开始验证
+            </Button>
+          </div>
+          <div className='text-[14px]  text-[#495464]   font-bold'>输出</div>
+          <Textarea
+            className='h-[150px] resize-none mt-4'
+            value={""}
+            disabled={true}
+            placeholder='请输入'
+          />
         </div>
       )}
     </div>
@@ -195,7 +244,7 @@ const SettingBuiltInTool: FC<Props> = ({
       panelClassName='mt-[65px] !w-[405px]'
       maxWidthClassName='!max-w-[405px]'
       height='calc(100vh - 65px)'
-      headerClassName='!border-b-black/5'
+      // headerClassName='!border-b-black/5'
       body={
         <div className='h-full pt-3'>
           {isLoading

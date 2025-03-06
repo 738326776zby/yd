@@ -27,8 +27,8 @@ const AbilityExploreNav = ({
     )}>
       {
         activated
-          ? <RiPlanetFill className='mr-2 w-4 h-4' />
-          : <RiPlanetLine className='mr-2 w-4 h-4' />
+          ? <span className='icon iconfont icon-reserved-fill mr-1'></span>
+          : <span className='icon iconfont icon-reserved-line mr-1'></span>
       }
       {t('common.menus.abilityExplore')}
     </Link>

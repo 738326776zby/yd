@@ -2,7 +2,7 @@
  * @Author: zhangboya3 zhangboya3@xiaomi.com
  * @Date: 2025-03-05 15:42:20
  * @LastEditors: zhangboya3 zhangboya3@xiaomi.com
- * @LastEditTime: 2025-03-05 21:06:23
+ * @LastEditTime: 2025-03-06 19:16:40
  * @FilePath: /yd/app/components/ability-explore/index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -51,7 +51,7 @@ const Explore: FC<IExploreProps> = ({
         }
       >
         <Sidebar setActiveTabItem={setActiveTabItem} />
-        <div className='grow w-0 pl-6'>
+        <div className='grow w-0'>
           {children}
         </div>
       </ExploreContext.Provider>

@@ -212,9 +212,9 @@ const ProviderDetail = ({
   }, [collection.name, collection.type, getCustomProvider, getProviderToolList, getWorkflowToolProvider])
 
   return (
-    <div className='px-6 py-3'>
+    <div className='px-6 py-3 '>
       
-      <div className='flex items-center py-1 gap-2'>
+      <div className='flex items-center gap-2'>
         <div className='relative shrink-0'>
           {typeof collection.icon === 'string' && (
             <div className='w-8 h-8 bg-center bg-cover bg-no-repeat rounded-md' style={{ backgroundImage: `url(${collection.icon})` }} />
@@ -233,6 +233,7 @@ const ProviderDetail = ({
           </div>
         </div>
       </div>
+      <div className='text-[14px] font-semibold text-[#495464] mt-[30px] mb-4'>插件介绍</div>
       <div className='mt-2 min-h-[36px] text-gray-500 text-sm leading-[18px]'>{collection.description[language]}</div>
       <div className='flex gap-1 border-b-[0.5px] border-black/5'>
         {(collection.type === CollectionType.builtIn) && needAuth && (
@@ -280,14 +281,14 @@ const ProviderDetail = ({
             </Button>
           </>
         )}
-      </div>
+      </div> 
       {/* Tools */}
       <div className='pt-3'>
         {isDetailLoading && <div className='flex h-[200px]'><Loading type='app' /></div>}
         {!isDetailLoading && (
           <div className='text-xs font-medium leading-6 text-gray-500'>
-            {collection.type === CollectionType.workflow && <span className=''>{t('tools.createTool.toolInput.title').toLocaleUpperCase()}</span>}
-            {collection.type !== CollectionType.workflow && <span className=''>{t('tools.includeToolNum', { num: toolList.length }).toLocaleUpperCase()}</span>}
+            {collection.type === CollectionType.workflow && <div className='text-[14px] font-semibold text-[#495464]'>{t('tools.createTool.toolInput.title').toLocaleUpperCase()}</div>}
+            {collection.type !== CollectionType.workflow && <div className='text-[14px] font-semibold text-[#495464] mb-4'>插件工具</div>}
             {needAuth && (isBuiltIn || isModel) && !isAuthed && (
               <>
                 <span className='px-1'>·</span>

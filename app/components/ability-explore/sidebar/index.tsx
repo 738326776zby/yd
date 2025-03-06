@@ -28,12 +28,12 @@ const SideBar: FC<IExploreSideBarProps> = ({ setActiveTabItem }) => {
         {
           title: '元典自有',
           key: 'owned',
-          icon: '🏠',
+          icon: 'icon-home-smile-2-line',
         },
         {
           title: '第三方',
           key: 'thirdParty',
-          icon: '日',
+          icon: 'icon-bookmark-2-line',
         },
       ],
     },
@@ -44,17 +44,17 @@ const SideBar: FC<IExploreSideBarProps> = ({ setActiveTabItem }) => {
         {
           title: '元典工具',
           key: 'defaultTools',
-          icon: '🏠',
+          icon: 'icon-home-heart-line',
         },
         {
           title: '第三方工具',
           key: 'thirdPartyTools',
-          icon: '回',
+          icon: 'icon-bookmark-3-line',
         },
         {
           title: '自定义工具',
           key: 'customTools',
-          icon: '⚙️',
+          icon: 'icon-settings-3-line',
         },
       ],
     },
@@ -65,14 +65,13 @@ const SideBar: FC<IExploreSideBarProps> = ({ setActiveTabItem }) => {
         {
           title: '元典推荐',
           key: 'recommended',
-          icon: '💬',
+          icon: 'icon-chat-smile-2-line',
         },
       ],
     },
   ])
   const searchParams = useSearchParams()
   const router = useRouter()
-  const pathname = usePathname()
   const getType = () => {
     const params = new URLSearchParams(searchParams)
     const type = params.get('type') || 'owned'
@@ -138,7 +137,7 @@ const SideBar: FC<IExploreSideBarProps> = ({ setActiveTabItem }) => {
                 }}
               >
                 {/* 图标 */}
-                <span className="mr-2">{sectionItem.icon}</span>
+                <span className={`icon iconfont ${sectionItem.icon} mr-1`}></span>
                 {/* 标题 */}
                 <span>{sectionItem.title}</span>
               </div>

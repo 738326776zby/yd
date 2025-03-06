@@ -28,8 +28,8 @@ const ToolsNav = ({
     )}>
       {
         activated
-          ? <RiHammerFill className='mr-2 w-4 h-4' />
-          : <RiHammerLine className='mr-2 w-4 h-4' />
+          ? <span className='icon iconfont icon-stack-fill mr-1'></span>
+          : <span className='icon iconfont icon-stack-line mr-1'></span>
       }
       {t('common.menus.tools')}
     </Link>

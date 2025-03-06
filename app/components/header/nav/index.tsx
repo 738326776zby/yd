@@ -53,7 +53,7 @@ const Nav = ({
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
-          <div className='mr-2'>
+          <div className='mr-1'>
             {
               (hovered && curNav)
                 ? <ArrowNarrowLeft className='w-4 h-4' />

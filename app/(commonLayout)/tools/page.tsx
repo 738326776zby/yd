@@ -23,6 +23,6 @@ const Layout: FC = () => {
       return router.replace('/datasets')
   }, [isCurrentWorkspaceDatasetOperator, router])
 
-  return <ToolProviderList />
+  return <ToolProviderList type='tools'/>
 }
 export default React.memo(Layout)

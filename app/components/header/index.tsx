@@ -77,7 +77,7 @@ const Header = () => {
       )}
       {!isMobile && (
         <div className='flex items-center'>
-          {!isCurrentWorkspaceDatasetOperator && <ExploreNav className={navClassName} />}
+          {/* {!isCurrentWorkspaceDatasetOperator && <ExploreNav className={navClassName} />} */}
           {!isCurrentWorkspaceDatasetOperator && <AbilityExploreNav className={navClassName} />}
           {!isCurrentWorkspaceDatasetOperator && <AppNav />}
           {(isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && <DatasetNav />}

@@ -29,7 +29,7 @@ const ToolItem = ({
   return (
     <>
       <div
-        className={cn('mb-2 px-4 py-3 rounded-xl bg-gray-25 border-[0.5px] border-gary-200  shadow-xs cursor-pointer', disabled && 'opacity-50 !cursor-not-allowed')}
+        className={cn('mb-2 px-4 py-3 rounded-xl bg-gradient-to-b from-[#E5EDFE] to-white border-[0.5px] border-gary-200 shadow-[0px_2px_4px_0px_rgba(217,219,232,0.51)] cursor-pointer', disabled && 'opacity-50 !cursor-not-allowed')}
         onClick={() => !disabled && setShowDetail(true)}
       >
         <div className='text-gray-800 font-semibold text-sm leading-5'>{tool.label[language]}</div>

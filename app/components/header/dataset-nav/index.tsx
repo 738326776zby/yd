@@ -42,8 +42,8 @@ const DatasetNav = () => {
 
   return (
     <Nav
-      icon={<RiBook2Line className='w-4 h-4' />}
-      activeIcon={<RiBook2Fill className='w-4 h-4' />}
+      icon={<span className='icon iconfont icon-article-line mr-1'></span>}
+      activeIcon={<span className='icon iconfont icon-article-fill mr-1'></span>}
       text={t('common.menus.datasets')}
       activeSegment='datasets'
       link='/datasets'
