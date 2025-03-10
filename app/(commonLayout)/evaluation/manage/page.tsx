@@ -18,8 +18,8 @@ const AppList = () => {
   const [open, setOpen] = useState<boolean>(false);
   return (
     <div className='relative flex justify-center overflow-y-auto bg-background-body shrink-0 h-0 grow  gap-4'>
-      <div className='w-[336px] bg-white flex border-r-3'>
-        <div className='flex flex-1 pt-[14px] px-[14px] pb-4 h-[66px] '>
+<div className='w-[336px] bg-white flex border-r-3'>
+        <div className='flex flex-1 pt-[14px] px-[14px] pb-4 border-b border-dashed border-[#E1E3E7]'>
           <div className='relative w-10 h-10'>
             {typeof chooseTarget?.icon === 'string' && (
               <div className='w-10 h-10 bg-center bg-cover bg-no-repeat rounded-md' style={{ backgroundImage: `url(${chooseTarget?.icon})` }} />
