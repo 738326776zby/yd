@@ -1,0 +1,9 @@
+.evaluation-opt-button .ant-btn-compact-first-item{
+    display: none;
+}
+.evaluation-opt-button .ant-space-compact{
+  width: 32px;
+}
+.evaluation-opt-button .ant-btn-compact-last-item{
+  border-color: transparent !important;
+}

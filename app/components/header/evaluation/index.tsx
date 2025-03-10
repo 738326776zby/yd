@@ -17,10 +17,10 @@ const EvaluationsNav = ({
 }: EvaluationsNavProps) => {
   const { t } = useTranslation()
   const selectedSegment = useSelectedLayoutSegment()
-  const activated = selectedSegment === 'evaluations'
+  const activated = selectedSegment?.includes('evaluation')
 
   return (
-    <Link href="/evaluation" className={classNames(
+    <Link href="/evaluation/apps" className={classNames(
       'group text-sm font-medium',
       activated && 'font-semibold bg-components-main-nav-nav-button-bg-active hover:bg-components-main-nav-nav-button-bg-active-hover shadow-md',
       activated ? 'text-components-main-nav-nav-button-text-active' : 'text-components-main-nav-nav-button-text hover:bg-components-main-nav-nav-button-bg-hover',

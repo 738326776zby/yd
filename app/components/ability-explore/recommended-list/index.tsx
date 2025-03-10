@@ -107,5 +107,5 @@ const DefaultToolsList = () => {
     </>
   )
 }
-DefaultToolsList.displayName = 'ToolDefaultToolsList'
+DefaultToolsList.displayName = 'RecommendedList'
 export default DefaultToolsList
