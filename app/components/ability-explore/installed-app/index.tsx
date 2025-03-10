@@ -1,32 +1,35 @@
 'use client'
-import type { FC } from 'react'
-import React, { useEffect } from 'react'
+import  { FC,useState,useEffect } from 'react'
+import React from 'react'
 import { useContext } from 'use-context-selector'
 import ExploreContext from '@/context/explore-context'
 import TextGenerationApp from '@/app/components/share/text-generation'
 import Loading from '@/app/components/base/loading'
 import ChatWithHistory from '@/app/components/base/chat/chat-with-history'
-import { fetchInstalledAppList as doFetchInstalledAppList} from '@/service/ability-explore'
-export type IInstalledAppProps = {
+import type { Collection } from '@/models/ability-explore'
+import { fetchInstalledAppList } from '@/service/explore'
+import type { InstalledApp } from '@/models/explore'
+import Introduce from '@/app/components/ability-explore/introduce'
+export type ItargetDataProps = {
   id: string
 }
 
-const InstalledApp: FC<IInstalledAppProps> = ({
-  id,
+const InstalledApp: FC<ItargetDataProps> = ({
+  id
 }) => {
-  const { activeTabItem,setInstalledApps,installedApps } = useContext(ExploreContext)
-  const installedApp = installedApps?.find(item => item.id === id)
-  const fetchInstalledAppList = async () => {
-    const { installed_apps }: any = await doFetchInstalledAppList()
-    setInstalledApps(installed_apps)
-  }
+  const [targetData,setTargetData] = useState<InstalledApp |undefined>(undefined)
   useEffect(()=>{
-      // 如果刷新页面没有 installedApps 信息，那么就重新获取
-      if (!installedApps?.length) {
-        fetchInstalledAppList()
-      }
+    const fetchData = async () => {
+      const { installed_apps }: any = await fetchInstalledAppList()
+      //@ts-ignore
+      const target = installed_apps.filter((item)=>item.id==id)
+      console.log(target.length ? target[0] : undefined)
+      setTargetData(target.length? target[0] : undefined)
+    }
+    fetchData()
   },[])
-  if (!installedApp) {
+
+  if (!targetData) {
     return (
       <div className='flex h-full items-center'>
         <Loading type='area' />
@@ -35,16 +38,17 @@ const InstalledApp: FC<IInstalledAppProps> = ({
   }
 
   return (
-    <div className='h-full  pl-4 pr-2 px-4 mt-6 grow'>
-      {installedApp.app.mode !== 'completion' && installedApp.app.mode !== 'workflow' && (
-        <ChatWithHistory installedAppInfo={installedApp} className='rounded-2xl shadow-md overflow-hidden' />
+    <div className='h-full py-2 pl-0 pr-2 sm:p-2 mt-4 flex gap-4' >
+      {targetData.app.mode !== 'completion' && targetData.app.mode !== 'workflow' && (
+         <ChatWithHistory installedAppInfo={targetData} className='rounded-2xl shadow-md overflow-hidden flex-1' />
       )}
-      {installedApp.app.mode === 'completion' && (
-        <TextGenerationApp isInstalledApp installedAppInfo={installedApp}/>
+      {targetData.app.mode === 'completion' && (
+          <TextGenerationApp isInstalledApp installedAppInfo={targetData}/>
       )}
-      {installedApp.app.mode === 'workflow' && (
-        <TextGenerationApp isWorkflow isInstalledApp installedAppInfo={installedApp}/>
+      {targetData.app.mode === 'workflow' && (
+        <TextGenerationApp isWorkflow isInstalledApp installedAppInfo={targetData}/>
       )}
+      <Introduce/>
     </div>
   )
 }

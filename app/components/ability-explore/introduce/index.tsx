@@ -4,7 +4,7 @@ import React from 'react'
 
 const Introduce = () => {
   return (
-    <div className='flex w-[408px] bg-white shadow-[0px_2px_4px_0px_rgba(217,219,232,0.51)] rounded-lg overflow-y-auto mt-6 p-4  h-full'>
+    <div className='flex w-[408px] bg-white shadow-[0px_2px_4px_0px_rgba(217,219,232,0.51)] rounded-lg overflow-y-auto  p-4  h-full'>
       <div className='w-full'>
         <div className='flex items-center gap-2 mb-3'>
           <div className='w-8 h-8 rounded-full overflow-hidden'>

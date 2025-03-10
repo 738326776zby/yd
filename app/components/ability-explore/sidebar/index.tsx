@@ -7,11 +7,13 @@ export type NavItem = {
   title: string
   key: string
   icon: string
+  category?: string
 }
 export type NavSection = {
   mainTitle: string
   list: NavItem[]
   desc: string
+  
 }
 export type IExploreSideBarProps = {
   setActiveTabItem: (item: NavItem & NavSection) => void
@@ -23,7 +25,7 @@ const SideBar: FC<IExploreSideBarProps> = ({ setActiveTabItem }) => {
   const [navList, setNavList] = useState<NavSection[]>([
     {
       mainTitle: '数据与知识',
-      desc: '基于元典自有的数据采集、治理、编辑、审核',
+      desc: '基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核',
       list: [
         {
           title: '元典自有',
@@ -39,7 +41,7 @@ const SideBar: FC<IExploreSideBarProps> = ({ setActiveTabItem }) => {
     },
     {
       mainTitle: '工具',
-      desc: '基于元典自有的数据采集、治理、编辑、审核',
+      desc: '基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核',
       list: [
         {
           title: '元典工具',
@@ -50,22 +52,25 @@ const SideBar: FC<IExploreSideBarProps> = ({ setActiveTabItem }) => {
           title: '第三方工具',
           key: 'thirdPartyTools',
           icon: 'icon-bookmark-3-line',
+          category: 'builtin',
         },
         {
           title: '自定义工具',
           key: 'customTools',
           icon: 'icon-settings-3-line',
+          category: 'workflow',
         },
       ],
     },
     {
       mainTitle: '工作流应用',
-      desc: '基于元典自有的数据采集、治理、编辑、审核',
+      desc: '基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核基于元典自有的数据采集、治理、编辑、审核',
       list: [
         {
           title: '元典推荐',
           key: 'recommended',
           icon: 'icon-chat-smile-2-line',
+          category: 'workflow',
         },
       ],
     },
@@ -99,7 +104,10 @@ const SideBar: FC<IExploreSideBarProps> = ({ setActiveTabItem }) => {
       ...sectionItem,
       ...section,
     })
-    router.push(`/ability-explore/apps?type=${key}`, { scroll: false })
+    let url = `/ability-explore/apps?type=${key}`
+    const category = sectionItem.category
+     url += category?`&category=${category}`:''
+    router.push(url, { scroll: false })
   }
   return (
     <div className="flex flex-col w-[160px] bg-white shadow-[0px_2px_4px_0px_rgba(217,219,232,0.51)] rounded-lg poverflow-y-auto mt-6 ml-10 py-4 h-max-content">

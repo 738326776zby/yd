@@ -38,7 +38,7 @@ const ProviderCard = ({
   }, [collection.labels, labelList, language])
 
   return (
-    <div className={cn('group col-span-1 bg-white border-2 border-solid border-transparent rounded-xl shadow-sm min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg', active && '!border-primary-400',className && className)} onClick={onSelect}>
+    <div className={cn('group col-span-1 bg-white border-2 border-solid border-transparent rounded-xl shadow-sm min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg relative', active && '!border-primary-400',className && className)} onClick={onSelect}>
       <div className='flex pt-[14px] px-[14px] pb-3 h-[66px] items-center gap-3 grow-0 shrink-0'>
         <div className='relative shrink-0'>
           {typeof collection.icon === 'string' && (
@@ -79,6 +79,7 @@ const ProviderCard = ({
           </div>
         </div>
       )}
+      <img src='./bg.png' className='absolute bottom-0 right-0 w-[104px] h-[104px]' />
     </div>
   )
 }

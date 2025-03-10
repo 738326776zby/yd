@@ -484,7 +484,7 @@ const TextGeneration: FC<IMainProps> = ({
       ref={resRef}
       className={
         cn(
-          'flex flex-col h-full shrink-0',
+          'flex flex-col h-full shrink-0 ',
           isPC ? 'px-10 py-8' : 'bg-gray-50',
           isTablet && 'p-6', isMobile && 'p-4')
       }
@@ -547,7 +547,7 @@ const TextGeneration: FC<IMainProps> = ({
   return (
     <>
       <div className={cn(
-        isPC && 'flex',
+        isPC && 'flex flex-1',
         isInstalledApp ? s.installedApp : 'h-screen',
         'bg-gray-50',
       )}>

@@ -1,21 +1,13 @@
-'use client'
 import cn from '@/utils/classnames'
-import type { App } from '@/models/explore'
+import type { AppBasicInfo } from '@/models/explore'
 import AppIcon from '@/app/components/base/app-icon'
-import { getLanguage } from '@/i18n/language'
-import { useContext } from 'use-context-selector'
-import type { Collection } from '@/models/ability-explore'
-import I18n from '@/context/i18n'
-
 export type AppCardProps = {
-  collection: Collection
+  collection: AppBasicInfo
   onSelect?: () => void
   active?: boolean
 }
-
 const AppCard = ({ onSelect, collection,active }: AppCardProps) => {
-  const { locale } = useContext(I18n)
-  const language = getLanguage(locale)
+  console.log(collection)
   return (
     <div
       className={cn(
@@ -24,28 +16,32 @@ const AppCard = ({ onSelect, collection,active }: AppCardProps) => {
       )}
       onClick={onSelect}
     >
-      <div className="flex pt-[14px] px-[14px] pb-3 h-[66px] items-center gap-3 grow-0 shrink-0">
-        <div className="relative shrink-0">
+        <div className='flex pt-[14px] px-[14px] pb-3 h-[66px] items-center gap-3 grow-0 shrink-0'>
+        <div className='relative shrink-0'>
           {typeof collection.icon === 'string' && (
             <div className='w-10 h-10 bg-center bg-cover bg-no-repeat rounded-md' style={{ backgroundImage: `url(${collection.icon})` }} />
           )}
           {typeof collection.icon !== 'string' && (
             <AppIcon
               size='large'
-              icon={collection.icon.content}
-              background={collection.icon.background}
+              icon={collection.icon_url}
+              background={collection.icon_background}
             />
           )}
         </div>
-        <div className="grow w-0 py-[1px]">
-          <div className="flex items-center text-sm leading-5 font-semibold text-text-secondary">
-            <div className='truncate' title={collection.label[language]}>{collection.label[language]}</div>
+        <div className='grow w-0 py-[1px]'>
+          <div className='flex items-center text-sm leading-5 font-semibold text-gray-800'>
+            <div className='truncate' title={collection.name}>{collection.name}</div>
+          </div>
+          <div className='flex items-center text-[10px] leading-[18px] text-gray-500 font-medium'>
+            <div className='truncate'>类型&nbsp;{collection.mode}</div>
           </div>
         </div>
       </div>
+     
       <div className="description-wrapper h-[90px] px-[14px] text-xs leading-normal text-text-tertiary ">
         <div className="line-clamp-4 group-hover:line-clamp-2">
-          {collection.description[language]}
+          {collection.description}
         </div>
       </div>
     </div>

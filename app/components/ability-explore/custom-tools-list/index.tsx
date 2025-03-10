@@ -8,7 +8,7 @@ import ToolProviderList from '@/app/components/tools/provider-list'
 
 const List = () => {
   const { activeTabItem } = useContext(ExploreContext)
-  return activeTabItem.key === 'owned' ? (
+  return activeTabItem.key === 'customTools' ? (
     <ToolProviderList type={activeTabItem.key}/>
   )
     : null
