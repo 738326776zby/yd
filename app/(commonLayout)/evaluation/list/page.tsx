@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
   RiAddLine,
-  RiMoreLine
+  RiMoreFill
 } from '@remixicon/react'
 import cn from '@/utils/classnames'
 import type { EvaluationItem } from '@/models/evaluation'
@@ -15,7 +15,11 @@ import './index.css'
 import { QuestionCircleFilled, DashOutlined } from '@ant-design/icons';
 import EvaluationPrincipleModal from '@/app/components/evaluation/evaluation-principle';
 import NewEvaluationPrincipleModal from '@/app/components/evaluation/new-evaluation'
-
+import CustomPopover from '@/app/components/base/popover'
+import Divider from '@/app/components/base/divider'
+import type { HtmlContentProps } from '@/app/components/base/popover'
+import Toast, { ToastContext } from '@/app/components/base/toast'
+import { AppTypeIcon } from '@/app/components/app/type-selector'
 const DefaultToolsList = () => {
   const [chooseTarget, setChooseTarget] = useState<EvaluationItem | undefined>()
   const [allList, setAllList] = useState<EvaluationItem[]>([])
@@ -25,20 +29,20 @@ const DefaultToolsList = () => {
   const menuList = {
     items: [
       {
-        label: <span onClick={()=>{
+        label: <span onClick={() => {
           setOpenNew(true)
         }} className='text-[#667085]'>编辑</span>,
         key: 'edit',
       },
       {
-        label: <span onClick={()=>{
+        label: <span onClick={() => {
           setOpenNew(true)
         }} className='text-[#667085]'>下载</span>,
         key: 'download',
 
       },
       {
-        label: <span onClick={()=>{
+        label: <span onClick={() => {
           setOpenNew(true)
         }} className='text-[#667085]'>删除</span>,
         key: 'delete',
@@ -59,8 +63,57 @@ const DefaultToolsList = () => {
       return true
     })
   }
-  const selectDropDown = (item: string) => {
-    console.log(item)
+  const Operations = (props: HtmlContentProps) => {
+    const {target} = props
+    const onMouseLeave = async () => {
+      props.onClose?.()
+    }
+    const onClickSettings = async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      props.onClick?.()
+      e.preventDefault()
+      // setShowEditModal(true)
+    }
+    const onClickDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      props.onClick?.()
+      e.preventDefault()
+      // setShowDuplicateModal(true)
+    }
+    const onClickExport = async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      props.onClick?.()
+      e.preventDefault()
+      // exportCheck()
+    }
+    const onClickDelete = async (e: React.MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation()
+      props.onClick?.()
+      e.preventDefault()
+      // setShowConfirmDelete(true)
+    }
+    return (
+      <div className="relative w-full py-1" onMouseLeave={onMouseLeave}>
+        <button className={s.actionItem} onClick={()=>{
+          setChooseTarget(target)
+        }}>
+          <span className={s.actionName}>编辑</span>
+        </button>
+        <Divider className="!my-1" />
+        <button className={s.actionItem} onClick={onClickExport}>
+          <span className={s.actionName}>下载</span>
+        </button>
+        <Divider className="!my-1" />
+        <div
+          className={cn(s.actionItem, s.deleteActionItem, 'group')}
+          onClick={onClickDelete}
+        >
+          <span className={cn(s.actionName, 'group-hover:text-red-500')}>
+            删除
+          </span>
+        </div>
+      </div>
+    )
   }
 
   const getDefaultToolsList = async () => {
@@ -111,8 +164,8 @@ const DefaultToolsList = () => {
         >
           <div className='flex flex-col col-span-1 bg-gray-200 border-[0.5px] border-black/5 rounded-xl min-h-[160px] transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-50 hover:shadow-lg' onClick={() => {
             setOpenNew(true)
-            setChooseTarget(undefined)
-          }}>
+
+          }} >
             <div className='group grow rounded-t-xl hover:bg-white' >
               <div className='shrink-0 flex items-center p-4 pb-3'>
                 <div className='w-10 h-10 flex items-center justify-center border border-gray-200 bg-gray-100 rounded-lg group-hover:border-primary-100 group-hover:bg-primary-50'>
@@ -123,47 +176,88 @@ const DefaultToolsList = () => {
             </div>
           </div>
           {filterList().map((collection) => (
-            <div className={cn('group col-span-1 bg-white border-2 border-solid border-transparent rounded-xl shadow-sm min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg relative')} >
+            <div
+              onClick={(e) => {
+                e.preventDefault()
+                //  getRedirection(isCurrentWorkspaceEditor, app, push)
+              }}
+              onMouseEnter={() => {
+                setChooseTarget(collection)
+              }}
+              onMouseLeave={() => {
+                setChooseTarget(undefined)
+              }}
+              className='relative h-[160px] group col-span-1 bg-components-card-bg border-[1px] border-solid border-components-card-border rounded-xl shadow-sm inline-flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg flex'
+            >
               <div className='flex pt-[14px] px-[14px] pb-3 h-[66px] items-center gap-3 grow-0 shrink-0'>
                 <div className='relative shrink-0'>
-                  {typeof collection.icon === 'string' && (
-                    <div className='w-10 h-10 bg-center bg-cover bg-no-repeat rounded-md' style={{ backgroundImage: `url(${collection.icon})` }} />
-                  )}
-                  {typeof collection.icon !== 'string' && collection.icon && (
-                    <AppIcon
-                      size='large'
-                      icon={collection.icon?.content}
-                      background={collection?.icon.background}
-                    />
-                  )}
+                  <AppIcon
+                    size="large"
+                    iconType={collection?.icon_type}
+                    icon={collection?.icon}
+                    background={collection?.icon_background}
+                    imageUrl={collection.icon_url}
+                  />
+                  <AppTypeIcon type={collection.mode} wrapperClassName='absolute -bottom-0.5 -right-0.5 w-4 h-4 shadow-sm' className='w-3 h-3' />
                 </div>
                 <div className='grow w-0 py-[1px]'>
-                  <div className='flex items-center text-sm leading-5 font-semibold text-gray-800'>
+                  <div className='flex items-center text-sm leading-5 font-semibold text-text-secondary'>
                     <div className='truncate' title={collection.title}>{collection.title}</div>
                   </div>
-                  <div className='flex items-center text-[10px] leading-[18px] text-gray-500 font-medium'>
-                    <div className='truncate'>发布于&nbsp;{collection.publishTime}</div>
+                  <div className='flex items-center text-[10px] leading-[18px] text-text-tertiary font-medium'>
+                    发布于{collection.publishTime}
                   </div>
                 </div>
               </div>
-              <div
-                className={cn(
-                  'grow mb-2 px-[14px] max-h-[72px] text-xs leading-normal text-gray-500 line-clamp-4'
-                )}
-                title={collection.progress}
-              >
-                {collection.progress}
+              <div className='title-wrapper h-[90px] px-[14px] text-xs leading-normal text-text-tertiary'>
+                <div
+                  className={cn('line-clamp-1')}
+                  title={collection.progress}
+                >
+                  来源：{collection.progress}
+                </div>
+                <div
+                  className={cn('line-clamp-1')}
+                  title={collection.progress}
+                >
+                  适用说明：{collection.progress}
+                </div>
               </div>
-              <div className='flex shrink-0 mt-1 pt-1 pl-[14px] pr-[6px] pb-[6px] h-[42px] justify-end'>
-                <Dropdown menu={menuList} onOpenChange={(open)=>{
-                    if(open){
-                      setChooseTarget(collection)
-                    }
-                }}>
-                  <a onClick={(e) => e.preventDefault()}>
-                    <RiMoreLine className='text-ms mr-1 text-gray-500 hover:text-[#155EEF]'/>
-                  </a>
-                </Dropdown>
+              <div className={cn(
+                'absolute bottom-1 left-0 right-0 items-center shrink-0 pt-1 pl-[14px] pr-[6px] pb-[6px] h-[42px]',
+              )}>
+                {
+                  chooseTarget?.id === collection.id && <>
+                    <div className={cn('grow flex items-center gap-1 w-0')} onClick={(e) => {
+                      e.stopPropagation()
+                      e.preventDefault()
+                    }}>
+                    </div>
+                    {/* <div className=' group-hover:!flex shrink-0 mx-1 w-[1px] h-[14px]' /> */}
+                    <div className='group-hover:!flex shrink-0 justify-end'>
+                      <CustomPopover
+                        htmlContent={<Operations target={collection}/>}
+                        position="br"
+                        trigger="click"
+                        btnElement={
+                          <div
+                            className='flex items-center justify-center w-8 h-8 cursor-pointer rounded-md'
+                          >
+                            <RiMoreFill className='w-4 h-4 text-text-tertiary' />
+                          </div>
+                        }
+                        btnClassName={open =>
+                          cn(
+                            open ? '!bg-black/5 !shadow-none' : '!bg-transparent',
+                            'h-8 w-8 !p-2 rounded-md border-none hover:!bg-black/5',
+                          )
+                        }
+                        popupClassName={'!w-[100px] translate-x-[-128px]'}
+                        className={'h-fit !z-20 mr-1'}
+                      />
+                    </div>
+                  </>
+                }
               </div>
             </div>
           ))}

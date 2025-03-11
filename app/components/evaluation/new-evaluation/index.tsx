@@ -50,7 +50,7 @@ const NewEvaluationPrincipleModal = ({ open, setOpen,target }: NewEvaluationPrin
     >
       <Form
         labelCol={{ span: 4 }}
-        // wrapperCol={{ span: 14 }}
+        variant={'filled'}
         layout="horizontal"
         className='mt-6'
         onValuesChange={formChange}

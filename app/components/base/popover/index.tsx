@@ -5,6 +5,7 @@ import cn from '@/utils/classnames'
 export type HtmlContentProps = {
   onClose?: () => void
   onClick?: () => void
+  [key:string]:any
 }
 
 type IPopover = {
