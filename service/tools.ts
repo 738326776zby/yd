@@ -7,16 +7,17 @@ import type {
   ToolCredential,
   WorkflowToolProviderRequest,
   WorkflowToolProviderResponse,
+  fetchTestToolReq,
 } from '@/app/components/tools/types'
 import type { ToolWithProvider } from '@/app/components/workflow/types'
 import type { Label } from '@/app/components/tools/labels/constant'
-
+import { FetchYdToolListReq } from '@/models/ability-explore'
 export const fetchCollectionList = () => {
   return get<Collection[]>('/workspaces/current/tool-providers')
 }
 
 export const fetchBuiltInToolList = (collectionName: string) => {
-  return get<Tool[]>(`/workspaces/current/tool-provider/builtin/${collectionName}/tools`)
+  return get<Tool[]>(`/hyyd/data-provider/${collectionName}/tools`)
 }
 
 export const fetchCustomToolList = (collectionName: string) => {
@@ -148,5 +149,16 @@ export const deleteWorkflowTool = (toolID: string) => {
     body: {
       workflow_tool_id: toolID,
     },
+  })
+}
+
+export const fetchTestTool = (req: fetchTestToolReq) => {
+  return post<any>(`/hyyd/tools/${req.name}/test`, {
+    body: req.params
+  })
+}
+export const fetchYdToolList = (params: FetchYdToolListReq) => {
+  return get<WorkflowToolProviderResponse>(`/hyyd/tools-providers`, {
+    params
   })
 }

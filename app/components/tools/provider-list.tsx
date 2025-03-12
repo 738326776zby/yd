@@ -21,13 +21,16 @@ import ExploreContext from '@/context/explore-context'
 import { useContext } from 'use-context-selector'
 import s from './style.module.css'
 import { useSearchParams } from 'next/navigation'
+import {
+  fetchHyydCollectionList,
+  fetchThirdPartyToolsList,
+} from '@/service/ability-explore'
 type ProviderListProps = {
   type: string
 }
 
 const ProviderList = ({ type }: ProviderListProps) => {
   const { t } = useTranslation()
-  const searchParams = useSearchParams()
 
   const [activeTab, setActiveTab] = useTabSearchParams({
     defaultTab: 'builtin',
@@ -105,12 +108,22 @@ const ProviderList = ({ type }: ProviderListProps) => {
     })
   }, [activeTab, tagFilterValue, keywords, collectionList])
   const getProviderList = async () => {
-    const list = await fetchCollectionList()
+    let list
+    if (type === 'owned') {
+      // 元典自有
+      list = await fetchHyydCollectionList()
+    } else if (type === 'thirdPartyTools') {
+      list = await fetchThirdPartyToolsList()
+    } else {
+      list = await fetchCollectionList()
+    }
+    console.log(list)
+
     setCollectionList([...list])
   }
-  useEffect(() => { 
+  useEffect(() => {
     getProviderList()
-  },[])
+  }, [])
 
   const [currentProvider, setCurrentProvider] = useState<
     Collection | undefined
@@ -170,6 +183,30 @@ const ProviderList = ({ type }: ProviderListProps) => {
                   {activeTabItem?.mainTitle}
                 </span>
                 <div className="flex items-center gap-2">
+                  <Input
+                    showLeftIcon
+                    showClearIcon
+                    wrapperClassName="w-[200px]"
+                    value={keywords}
+                    onChange={(e) => handleKeywordsChange(e.target.value)}
+                    onClear={() => handleKeywordsChange('')}
+                  />
+                </div>
+              </div>
+              <div className="text-gray-500 text-sm">{activeTabItem?.desc}</div>
+            </>
+          )}
+          {type === 'customTools' && (
+            <div className='flex flex-col gap-2'>
+              <div
+                className={
+                  'mb-1 text-xl font-semibold items-center justify-between flex flex-1'
+                }
+              >
+                <span className={s.textGradient}>
+                  {activeTabItem?.mainTitle}
+                </span>
+                <div className="flex items-center gap-2">
                   <LabelFilter
                     value={tagFilterValue}
                     onChange={handleTagsChange}
@@ -185,10 +222,6 @@ const ProviderList = ({ type }: ProviderListProps) => {
                 </div>
               </div>
               <div className="text-gray-500 text-sm">{activeTabItem?.desc}</div>
-            </>
-          )}
-          {type === 'customTools' && (
-            <>
               <TabSliderNew
                 value={activeTab}
                 onChange={(state) => {
@@ -197,21 +230,7 @@ const ProviderList = ({ type }: ProviderListProps) => {
                 }}
                 options={customToolsOptions}
               />
-              <div className="flex items-center gap-2">
-                <LabelFilter
-                  value={tagFilterValue}
-                  onChange={handleTagsChange}
-                />
-                <Input
-                  showLeftIcon
-                  showClearIcon
-                  wrapperClassName="w-[200px]"
-                  value={keywords}
-                  onChange={(e) => handleKeywordsChange(e.target.value)}
-                  onClear={() => handleKeywordsChange('')}
-                />
-              </div>
-            </>
+            </div>
           )}
           {type === 'recommended' && (
             <>
@@ -233,6 +252,34 @@ const ProviderList = ({ type }: ProviderListProps) => {
                   onClear={() => handleKeywordsChange('')}
                 />
               </div>
+            </>
+          )}
+          {type === 'thirdPartyTools' && (
+            <>
+              <div
+                className={
+                  'mb-1 text-xl font-semibold items-center justify-between flex flex-1'
+                }
+              >
+                <span className={s.textGradient}>
+                  {activeTabItem?.mainTitle}
+                </span>
+                <div className="flex items-center gap-2">
+                  <LabelFilter
+                    value={tagFilterValue}
+                    onChange={handleTagsChange}
+                  />
+                  <Input
+                    showLeftIcon
+                    showClearIcon
+                    wrapperClassName="w-[200px]"
+                    value={keywords}
+                    onChange={(e) => handleKeywordsChange(e.target.value)}
+                    onClear={() => handleKeywordsChange('')}
+                  />
+                </div>
+              </div>
+              <div className="text-gray-500 text-sm">{activeTabItem?.desc}</div>
             </>
           )}
         </div>
@@ -257,6 +304,7 @@ const ProviderList = ({ type }: ProviderListProps) => {
               onSelect={() => setCurrentProvider(collection)}
               key={collection.id}
               collection={collection}
+              type={type}
             />
           ))}
           {!filteredCollectionList.length && (

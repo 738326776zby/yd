@@ -10,7 +10,7 @@ import { addDefaultValue, toolParametersToFormSchemas } from '@/app/components/t
 import Textarea from '@/app/components/base/textarea'
 import type { Collection, Tool } from '@/app/components/tools/types'
 import { CollectionType } from '@/app/components/tools/types'
-import { fetchBuiltInToolList, fetchCustomToolList, fetchModelToolList, fetchWorkflowToolList } from '@/service/tools'
+import { fetchBuiltInToolList, fetchCustomToolList, fetchModelToolList, fetchWorkflowToolList,fetchTestTool } from '@/service/tools'
 import I18n from '@/context/i18n'
 import Button from '@/app/components/base/button'
 import Loading from '@/app/components/base/loading'
@@ -111,6 +111,13 @@ const SettingBuiltInTool: FC<Props> = ({
     return valid
   })()
 
+  const startTest = async () => { 
+    const res = await fetchTestTool({
+      name: currTool?.name,
+      params: paramsData
+    })
+    console.log(res)
+  }
   const infoUI = (
     <div className='pt-2'>
       <div className='text-[14px]  text-[#495464] font-bold  mb-[7px]'> {t('tools.setBuiltInTools.toolDescription')}</div>
@@ -166,7 +173,7 @@ const SettingBuiltInTool: FC<Props> = ({
             <Button
               className='w-[104px] h-[32px] rounded-[20px]'
               variant='primary'
-              onClick={() => { }}
+              onClick={startTest}
             >
               开始验证
             </Button>

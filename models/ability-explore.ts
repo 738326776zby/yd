@@ -173,3 +173,9 @@ export type DefaultToolsListResponse = {
   wenben: DefaultToolsListItem
   wendangchuli: DefaultToolsListItem
 }
+
+export type FetchYdToolListReq = {
+  scope?: string
+  label?: string[]
+  keyword?:string
+}

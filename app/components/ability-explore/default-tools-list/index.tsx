@@ -1,10 +1,11 @@
 'use client'
-import { useEffect, useState } from 'react'
+import React,{ useEffect, useState } from 'react'
 import { RiCloseLine } from '@remixicon/react'
 import type {
   Collection,
   DefaultToolsListItem,
   DefaultToolsListResponse,
+  FetchYdToolListReq
 } from '@/models/ability-explore'
 import cn from '@/utils/classnames'
 import { useTabSearchParams } from '@/hooks/use-tab-searchparams'
@@ -16,26 +17,35 @@ import ProviderDetail from '@/app/components/tools/provider/detail'
 import { useContext } from 'use-context-selector'
 import s from '@/app/components/tools/style.module.css'
 import ExploreContext from '@/context/explore-context'
-import test from './test.json'
 import Empty from './empty'
+import { fetchYdToolList } from '@/service/tools'
 const DefaultToolsList = () => {
   const { activeTabItem } = useContext(ExploreContext)
   const [activeTab, setActiveTab] = useTabSearchParams({
     defaultTab: '',
   })
   const options = [
-    { value: '', text: '全部' },
-    { value: 'xinxijiansuo', text: '信息检索类' },
-    { value: 'wenben', text: '文本解析类' },
-    { value: 'wendangchuli', text: '文档处理类' },
+    { value: '全部', text: '全部' },
+    { value: '信息检索类', text: '信息检索类' },
+    { value: '文本解析类', text: '文本解析类' },
+    { value: '文档处理类', text: '文档处理类' },
+    { value: '文本生成类', text: '文本生成类' },
+    { value: '专家规则类', text: '专家规则类' },
+    { value: '多模态类', text: '多模态类' },
   ]
   const [tagFilterValue, setTagFilterValue] = useState<string[]>([])
   const handleTagsChange = (value: string[]) => {
     setTagFilterValue(value)
+    getDefaultToolsList({
+      label:value
+    })
   }
   const [keywords, setKeywords] = useState<string>('')
   const handleKeywordsChange = (value: string) => {
     setKeywords(value)
+    getDefaultToolsList({
+      keyword:value
+    })
   }
 
   const [collectionList, setCollectionList] = useState<Collection[]>([])
@@ -65,17 +75,24 @@ const DefaultToolsList = () => {
     }
   }
 
-  const getDefaultToolsList = async () => {
-    // const list = await fetchCollectionList()
+  const getDefaultToolsList = async (params:FetchYdToolListReq ) => {
+    console.log(111)
+    const list = await fetchYdToolList({
+      label: tagFilterValue,
+      keyword: keywords,
+      scope: activeTab,
+      ...params
+    })
+    console.log(list)
     // @ts-ignore
-    const { xinxijiansuo, wenben, wendangchuli } =
-      test as DefaultToolsListResponse
-    setXinxijiansuo(xinxijiansuo)
-    setWenben(wendangchuli)
-    setWendangchuli(wendangchuli)
+    // const { xinxijiansuo, wenben, wendangchuli } =
+    //   test as DefaultToolsListResponse
+    // setXinxijiansuo(xinxijiansuo)
+    // setWenben(wendangchuli)
+    // setWendangchuli(wendangchuli)
   }
   useEffect(() => {
-    getDefaultToolsList()
+    getDefaultToolsList({})
   }, [])
 
   const [currentProvider, setCurrentProvider] = useState<
@@ -204,7 +221,7 @@ const DefaultToolsList = () => {
                       'pr-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
                     )}
                   >
-                    {wenbenList.map((collection) => (
+                    {wenbenList?.map((collection) => (
                       <ProviderCard
                         active={currentProvider?.id === collection.id}
                         onSelect={() => setCurrentProvider(collection)}
@@ -245,7 +262,7 @@ const DefaultToolsList = () => {
                       'pr-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
                     )}
                   >
-                    {wendangchuliList.map((collection) => (
+                    {wendangchuliList?.map((collection) => (
                       <ProviderCard
                         active={currentProvider?.id === collection.id}
                         onSelect={() => setCurrentProvider(collection)}
@@ -263,7 +280,7 @@ const DefaultToolsList = () => {
                 </>
               )}
             {
-              !wendangchuliList.length && !xinxijiansuoList.length && !wenbenList.length && <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'><Empty /></div>
+              !wendangchuliList?.length && !xinxijiansuoList?.length && !wenbenList?.length && <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'><Empty /></div>
             }
           </div>
           <div
@@ -291,4 +308,4 @@ const DefaultToolsList = () => {
   )
 }
 DefaultToolsList.displayName = 'ToolDefaultToolsList'
-export default DefaultToolsList
+export default React.memo(DefaultToolsList)

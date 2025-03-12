@@ -15,13 +15,15 @@ type Props = {
   collection: Collection
   onSelect: () => void
   className?: string
+  type?: string
 }
 
 const ProviderCard = ({
   active,
   collection,
   onSelect,
-  className
+  className,
+  type
 }: Props) => {
   const { t } = useTranslation()
   const { locale } = useContext(I18n)
@@ -38,7 +40,7 @@ const ProviderCard = ({
   }, [collection.labels, labelList, language])
 
   return (
-    <div className={cn('group col-span-1 bg-white border-2 border-solid border-transparent rounded-xl shadow-sm min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg relative', active && '!border-primary-400',className && className)} onClick={onSelect}>
+    <div className={cn('group col-span-1 bg-white border-2 border-solid border-transparent rounded-xl shadow-sm min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg relative', active && '!border-primary-400', className && className)} onClick={onSelect}>
       <div className='flex pt-[14px] px-[14px] pb-3 h-[66px] items-center gap-3 grow-0 shrink-0'>
         <div className='relative shrink-0'>
           {typeof collection.icon === 'string' && (
@@ -56,9 +58,11 @@ const ProviderCard = ({
           <div className='flex items-center text-sm leading-5 font-semibold text-gray-800'>
             <div className='truncate' title={collection.label[language]}>{collection.label[language]}</div>
           </div>
-          <div className='flex items-center text-[10px] leading-[18px] text-gray-500 font-medium'>
-            <div className='truncate'>{t('tools.author')}&nbsp;{collection.author}</div>
-          </div>
+          {
+            type !== 'owned' && <div className='flex items-center text-[10px] leading-[18px] text-gray-500 font-medium'>
+              <div className='truncate'>{t('tools.author')}&nbsp;{collection.author}</div>
+            </div>
+          }
         </div>
       </div>
       <div
@@ -71,7 +75,7 @@ const ProviderCard = ({
       >
         {collection.description[language]}
       </div>
-      {collection.labels?.length > 0 && (
+      {collection.labels?.length > 0 && (type !== 'owned') && (
         <div className='flex items-center shrink-0 mt-1 pt-1 pl-[14px] pr-[6px] pb-[6px] h-[42px]'>
           <div className='relative w-full flex items-center gap-1 py-[7px] rounded-md text-gray-500' title={labelContent}>
             <Tag01 className='shrink-0 w-3 h-3' />
@@ -79,8 +83,10 @@ const ProviderCard = ({
           </div>
         </div>
       )}
-      <img src='./bg.png' className='absolute bottom-0 right-0 w-[104px] h-[104px]' />
-    </div>
+      {
+        type === 'defaultTools' && <img src='./bg.png' className='absolute bottom-0 right-0 w-[104px] h-[104px]' />
+      }
+    </div >
   )
 }
 export default ProviderCard

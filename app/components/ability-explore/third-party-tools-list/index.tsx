@@ -8,10 +8,7 @@ import ToolProviderList from '@/app/components/tools/provider-list'
 
 const List = () => {
   const { activeTabItem } = useContext(ExploreContext)
-  return activeTabItem.key === 'thirdPartyTools' ? (
-    <ToolProviderList type={activeTabItem.key}/>
-  )
-    : null
+  return <ToolProviderList type={activeTabItem.key}/>
 }
 
 export default React.memo(List)

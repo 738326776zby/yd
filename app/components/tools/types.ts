@@ -163,3 +163,8 @@ export type WorkflowToolProviderResponse = {
   }
   privacy_policy: string
 }
+
+export type fetchTestToolReq = {
+  name: string | undefined
+  params: Record<string,any>
+}

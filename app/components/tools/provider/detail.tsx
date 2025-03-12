@@ -39,8 +39,7 @@ import {
   removeCustomCollection,
   saveWorkflowToolProvider,
   updateBuiltInToolCredential,
-  updateCustomCollection,
-  fetchWorkflowToolDetailByAppID
+  updateCustomCollection
 } from '@/service/tools'
 import { useModalContext } from '@/context/modal-context'
 import { useProviderContext } from '@/context/provider-context'
